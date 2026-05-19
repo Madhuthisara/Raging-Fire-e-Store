@@ -8,6 +8,7 @@ import { useCartStore } from '@/store/cartStore';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { productService } from '@/services/productService';
+import { Product } from '@/types/product';
 
 // Related products mock data
 
@@ -49,8 +50,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     const variants = variantsResponse?.output || [];
 
     // Filter related products
-    const relatedProducts = allProductsResponse?.output
-        ?.filter(p => p.id !== id)
+    const allProducts = allProductsResponse?.output;
+    const productsArray = Array.isArray(allProducts) ? allProducts : allProducts?.data || [];
+
+    const relatedProducts = productsArray
+        ?.filter((p: Product) => p.id !== id)
         ?.slice(0, 3) || [];
 
     // Filter attributes to only show customer-relevant ones
@@ -204,7 +208,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     YOU MAY ALSO LIKE
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {relatedProducts.map((p) => (
+                    {relatedProducts.map((p: Product) => (
                         <ProductCard
                             key={p.id}
                             id={p.id}

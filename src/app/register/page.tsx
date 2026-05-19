@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { message } from 'antd';
+import { App } from 'antd';
 import Link from 'next/link';
 import { User, Mail, Phone, MapPin, ArrowRight, Lock } from 'lucide-react';
 import { customerAuthService } from '@/services/authService';
@@ -10,6 +10,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 export default function RegisterPage() {
     const router = useRouter();
     const { setAuth } = useAuthStore();
+    const { message: messageApi } = App.useApp();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         firstName: '',
@@ -30,7 +31,7 @@ export default function RegisterPage() {
         e.preventDefault();
 
         if (formData.password !== formData.confirmPassword) {
-            message.error("Passwords do not match");
+            messageApi.error("Passwords do not match");
             return;
         }
 
@@ -48,15 +49,15 @@ export default function RegisterPage() {
             const response = await customerAuthService.register(data);
 
             if (response.success) {
-                message.success("Registration successful!");
+                messageApi.success("Registration successful!");
                 setAuth(response.output.customer, response.output.access_token);
                 router.push('/');
             } else {
-                message.error(response.message || "Registration failed");
+                messageApi.error(response.message || "Registration failed");
             }
         } catch (error: any) {
             console.error('Registration Error:', error);
-            message.error(error.response?.data?.message || "An error occurred during registration");
+            messageApi.error(error.response?.data?.message || "An error occurred during registration");
         } finally {
             setLoading(false);
         }

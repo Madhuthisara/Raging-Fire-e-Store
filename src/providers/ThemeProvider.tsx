@@ -2,7 +2,7 @@
 
 import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
-import { ConfigProvider, theme } from 'antd';
+import { App, ConfigProvider, theme } from 'antd';
 import { useEffect, useState } from 'react';
 
 function AntdConfig({ children }: { children: React.ReactNode }) {
@@ -28,7 +28,9 @@ function AntdConfig({ children }: { children: React.ReactNode }) {
                 algorithm: resolvedTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
             }}
         >
-            {children}
+            <App>
+                {children}
+            </App>
         </ConfigProvider>
     );
 }

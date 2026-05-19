@@ -2,13 +2,14 @@ import axiosInstance from "@/api/axiosInstance";
 import { API_ENDPOINTS } from "@/api/endpoints";
 
 export const paymentService = {
-    getActiveMethods: async (businessId: string) => {
-        const response = await axiosInstance.get(API_ENDPOINTS.PAYMENTS.METHODS(businessId));
+    getActiveMethods: async (businessId?: string) => {
+        const id = businessId || process.env.NEXT_PUBLIC_BUSINESS_ID || '';
+        const response = await axiosInstance.get(API_ENDPOINTS.PAYMENTS.METHODS(id));
         return response.data;
     },
 
     initiatePayment: async (data: {
-        business_id: string;
+        business_id?: string;
         gateway_name: string;
         amount: number;
         currency: string;
@@ -26,7 +27,11 @@ export const paymentService = {
         country?: string;
         items_description?: string;
     }) => {
-        const response = await axiosInstance.post(API_ENDPOINTS.PAYMENTS.INITIATE, data);
+        const payload = {
+            ...data,
+            business_id: data.business_id || process.env.NEXT_PUBLIC_BUSINESS_ID
+        };
+        const response = await axiosInstance.post(API_ENDPOINTS.PAYMENTS.INITIATE, payload);
         return response.data;
     }
 };
