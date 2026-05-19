@@ -5,8 +5,17 @@ import { ProductResponse, ProductsListResponse } from '../types/product';
 import { RequiredAttributesResponse, ProductVariantsResponse } from '../types/attribute';
 
 export const productService = {
-    getAllProducts: async (config?: AxiosRequestConfig): Promise<ProductsListResponse> => {
-        const response = await axiosInstance.get(API_ENDPOINTS.PRODUCTS.ALL, config);
+    getAllProducts: async (params?: {
+        sort?: string;
+        category_id?: string;
+        page?: number;
+        per_page?: number;
+        business_id?: string;
+    }): Promise<ProductsListResponse> => {
+        const business_id = params?.business_id || process.env.NEXT_PUBLIC_BUSINESS_ID;
+        const response = await axiosInstance.get(API_ENDPOINTS.PRODUCTS.ALL, {
+            params: { ...params, business_id }
+        });
         return response.data;
     },
 

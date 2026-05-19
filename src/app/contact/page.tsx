@@ -1,19 +1,26 @@
-import React from 'react';
-import type { Metadata } from 'next';
-import { CONTACT_DETAILS } from '@/data/contact';
+'use client';
 
-export const metadata: Metadata = {
-    title: 'Contact | RAGING FIRE',
-    description: 'Get in touch with RAGING FIRE.',
-};
+import React from 'react';
+import { CONTACT_DETAILS } from '@/data/contact';
+import { App, Form, Input } from 'antd';
+
 
 export default function ContactPage() {
+    const { message: messageApi } = App.useApp();
+    const [form] = Form.useForm();
+
+    const onFinish = (values: any) => {
+        console.log('Form Values:', values);
+        messageApi.success('YOUR MESSAGE HAS BEEN SENT SUCCESSFULLY!');
+        form.resetFields();
+    };
+
     return (
         <div className="w-full bg-background min-h-[calc(100vh-64px)] overflow-hidden transition-colors duration-300">
-            <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16 md:py-24 relative z-10">
+            <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 md:py-8 relative z-10">
 
                 {/* Header Section */}
-                <div className="mb-16 md:mb-24">
+                <div className="mb-16 md:mb-16">
                     <h1 className="text-5xl md:text-7xl font-heading font-black uppercase tracking-widest mb-6 text-foreground">
                         HIT US UP
                     </h1>
@@ -82,68 +89,81 @@ export default function ContactPage() {
 
                     {/* Right Column - Contact Form */}
                     <div className="lg:col-span-8">
-                        <form className="space-y-8" action="#" method="POST">
+                        <Form
+                            form={form}
+                            onFinish={onFinish}
+                            layout="vertical"
+                            className="space-y-8"
+                        >
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-2 relative group">
-                                    <label htmlFor="name" className="text-[10px] font-bold uppercase tracking-widest text-text-muted block transition-colors group-focus-within:text-foreground">
-                                        FULL NAME *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="name"
+                                    <Form.Item
                                         name="name"
-                                        required
-                                        className="w-full bg-transparent border-b border-zinc-300 dark:border-zinc-700 pb-3 pt-2 text-sm uppercase tracking-widest focus:outline-none focus:border-black dark:focus:border-white transition-colors text-foreground"
-                                        placeholder="JOHN DOE"
-                                    />
+                                        label={<span className="text-[10px] font-bold uppercase tracking-widest text-text-muted block transition-colors group-focus-within:text-foreground">FULL NAME *</span>}
+                                        rules={[{ required: true, message: 'Please enter your name' }]}
+                                        className="mb-0 ant-form-item-custom"
+                                    >
+                                        <Input
+                                            variant="underlined"
+                                            className="w-full bg-transparent border-b border-zinc-300 dark:border-zinc-700 pb-3 pt-2 text-sm uppercase tracking-widest focus:outline-none focus:border-black dark:focus:border-white transition-colors text-foreground rounded-none px-0"
+                                            placeholder="JOHN DOE"
+                                        />
+                                    </Form.Item>
                                 </div>
                                 <div className="space-y-2 relative group">
-                                    <label htmlFor="email" className="text-[10px] font-bold uppercase tracking-widest text-text-muted block transition-colors group-focus-within:text-foreground">
-                                        EMAIL ADDRESS *
-                                    </label>
-                                    <input
-                                        type="email"
-                                        id="email"
+                                    <Form.Item
                                         name="email"
-                                        required
-                                        className="w-full bg-transparent border-b border-zinc-300 dark:border-zinc-700 pb-3 pt-2 text-sm uppercase tracking-widest focus:outline-none focus:border-black dark:focus:border-white transition-colors text-foreground"
-                                        placeholder="JOHN@EXAMPLE.COM"
-                                    />
+                                        label={<span className="text-[10px] font-bold uppercase tracking-widest text-text-muted block transition-colors group-focus-within:text-foreground">EMAIL ADDRESS *</span>}
+                                        rules={[
+                                            { required: true, message: 'Please enter your email' },
+                                            { type: 'email', message: 'Please enter a valid email' }
+                                        ]}
+                                        className="mb-0 ant-form-item-custom"
+                                    >
+                                        <Input
+                                            variant="underlined"
+                                            className="w-full bg-transparent border-b border-zinc-300 dark:border-zinc-700 pb-3 pt-2 text-sm uppercase tracking-widest focus:outline-none focus:border-black dark:focus:border-white transition-colors text-foreground rounded-none px-0"
+                                            placeholder="JOHN@EXAMPLE.COM"
+                                        />
+                                    </Form.Item>
                                 </div>
                             </div>
 
                             <div className="space-y-2 relative group">
-                                <label htmlFor="subject" className="text-[10px] font-bold uppercase tracking-widest text-text-muted block transition-colors group-focus-within:text-foreground">
-                                    SUBJECT
-                                </label>
-                                <input
-                                    type="text"
-                                    id="subject"
+                                <Form.Item
                                     name="subject"
-                                    className="w-full bg-transparent border-b border-zinc-300 dark:border-zinc-700 pb-3 pt-2 text-sm uppercase tracking-widest focus:outline-none focus:border-black dark:focus:border-white transition-colors text-foreground"
-                                    placeholder="ORDER INQUIRY / COLLAB"
-                                />
+                                    label={<span className="text-[10px] font-bold uppercase tracking-widest text-text-muted block transition-colors group-focus-within:text-foreground">SUBJECT</span>}
+                                    className="mb-0 ant-form-item-custom"
+                                >
+                                    <Input
+                                        variant="underlined"
+                                        className="w-full bg-transparent border-b border-zinc-300 dark:border-zinc-700 pb-3 pt-2 text-sm uppercase tracking-widest focus:outline-none focus:border-black dark:focus:border-white transition-colors text-foreground rounded-none px-0"
+                                        placeholder="ORDER INQUIRY / COLLAB"
+                                    />
+                                </Form.Item>
                             </div>
 
                             <div className="space-y-2 relative group">
-                                <label htmlFor="message" className="text-[10px] font-bold uppercase tracking-widest text-text-muted block transition-colors group-focus-within:text-foreground">
-                                    YOUR MESSAGE *
-                                </label>
-                                <textarea
-                                    id="message"
+                                <Form.Item
                                     name="message"
-                                    required
-                                    rows={5}
-                                    className="w-full bg-transparent border-b border-zinc-300 dark:border-zinc-700 pb-3 pt-2 text-sm tracking-widest focus:outline-none focus:border-black dark:focus:border-white transition-colors uppercase resize-y mt-2 text-foreground"
-                                    placeholder="WHAT'S ON YOUR MIND?"
-                                ></textarea>
+                                    label={<span className="text-[10px] font-bold uppercase tracking-widest text-text-muted block transition-colors group-focus-within:text-foreground">YOUR MESSAGE *</span>}
+                                    rules={[{ required: true, message: 'Please enter your message' }]}
+                                    className="mb-0 ant-form-item-custom"
+                                >
+                                    <Input.TextArea
+                                        variant="underlined"
+                                        autoSize={{ minRows: 5, maxRows: 10 }}
+                                        className="w-full bg-transparent border-b border-zinc-300 dark:border-zinc-700 pb-3 pt-2 text-sm tracking-widest focus:outline-none focus:border-black dark:focus:border-white transition-colors uppercase resize-y mt-2 text-foreground rounded-none px-0"
+                                        placeholder="WHAT'S ON YOUR MIND?"
+                                    />
+                                </Form.Item>
                             </div>
 
                             <button type="submit" className="w-full md:w-auto px-12 py-4  text-bg-main dark:bg-white dark:text-black font-bold uppercase tracking-widest text-xs hover:opacity-80 transition-opacity mt-8 relative overflow-hidden group">
                                 <span className="relative z-10 transition-colors duration-300">SEND MESSAGE</span>
                                 <div className="absolute inset-0 bg-zinc-800 dark:bg-zinc-200 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
                             </button>
-                        </form>
+                        </Form>
                     </div>
                 </div>
             </div>
@@ -157,3 +177,4 @@ export default function ContactPage() {
         </div>
     );
 }
+

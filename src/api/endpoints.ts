@@ -5,7 +5,10 @@ export const API_ENDPOINTS = {
         VARIANTS: (id: string) => `/products/${id}/variants`,
         REQUIRED_ATTRIBUTES: (id: string) => `/products/${id}/required-attributes`,
     },
-    CATEGORIES: '/categories',
+    CATEGORIES: {
+        LIST: '/categories',
+        ALL: '/categories/all',
+    },
     ORDERS: '/orders',
     AUTH: {
         LOGIN: '/auth/login',

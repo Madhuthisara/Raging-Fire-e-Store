@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { message } from 'antd';
+import { App } from 'antd';
 import Link from 'next/link';
 import { Mail, Lock, ArrowRight, UserPlus } from 'lucide-react';
 import { customerAuthService } from '@/services/authService';
@@ -10,6 +10,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 export default function LoginPage() {
     const router = useRouter();
     const { setAuth } = useAuthStore();
+    const { message: messageApi } = App.useApp();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
@@ -28,15 +29,15 @@ export default function LoginPage() {
             const response = await customerAuthService.login(formData);
 
             if (response.success) {
-                message.success("Login successful!");
+                messageApi.success("Login successful!");
                 setAuth(response.output.customer, response.output.access_token);
                 router.push('/');
             } else {
-                message.error(response.message || "Login failed");
+                messageApi.error(response.message || "Login failed");
             }
         } catch (error: any) {
             console.error('Login Error:', error);
-            message.error(error.response?.data?.message || "Invalid email or password");
+            messageApi.error(error.response?.data?.message || "Invalid email or password");
         } finally {
             setLoading(false);
         }
