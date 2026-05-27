@@ -29,7 +29,7 @@ export default function ShopPage() {
             try {
                 const response = await categoryService.getAllCategories();
                 if (response.success && response.output) {
-                    setCategories(response.output);
+                    setCategories(Array.isArray(response.output) ? response.output : response.output.values);
                 }
             } catch (error) {
                 console.error('Failed to fetch categories:', error);
@@ -56,7 +56,7 @@ export default function ShopPage() {
 
                 results.forEach((res, index) => {
                     if (res.success && res.output) {
-                        newData[categories[index].id] = Array.isArray(res.output) ? res.output : res.output.data;
+                        newData[categories[index].id] = Array.isArray(res.output) ? res.output : res.output.values;
                     }
                 });
 
@@ -91,7 +91,7 @@ export default function ShopPage() {
                         setProducts(response.output);
                         setTotalProducts(response.output.length);
                     } else {
-                        setProducts(response.output.data);
+                        setProducts(response.output.values);
                         setTotalProducts(response.output.total);
                     }
                 }

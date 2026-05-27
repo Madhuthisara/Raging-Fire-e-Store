@@ -8,6 +8,7 @@ import { orderService } from '@/services/orderService';
 import { paymentService } from '@/services/paymentService'; // payment integration
 import { useRouter } from 'next/navigation';
 import { App, Form, Input, Select } from 'antd';
+import Script from 'next/script';
 
 
 export default function CheckoutPage() {
@@ -105,6 +106,16 @@ export default function CheckoutPage() {
                     // Gateway online payment flow
                     setIsRedirecting(true);
                     try {
+                        if (paymentMethod === 'payhere') {
+                            // Use our new Simple/Public initiation flow for PayHere
+                            await paymentService.initiatePayHereSimple(createdOrderId, finalTotal);
+                            // Clear cart right before moving to gateway
+                            clearCart();
+                            // The above method handles redirection, so we stop here
+                            return;
+                        }
+
+                        // Fallback/Existing flow for other gateways
                         const initResponse = await paymentService.initiatePayment({
                             business_id: businessId,
                             gateway_name: paymentMethod,
@@ -123,11 +134,12 @@ export default function CheckoutPage() {
                             items_description: `${items.length} items from E-store`
                         });
 
-                        // Clear cart right before moving to gateway as per instruction
+                        // Clear cart right before moving to gateway
                         clearCart();
 
+                        // Standard redirect for other gateways (Stripe, PayPal)
                         window.location.href = initResponse.output.payment_url;
-                        // Execution stops here due to redirect
+
                     } catch (paymentErr: any) {
                         console.error('Payment initiation failed:', paymentErr);
                         setIsRedirecting(false);
@@ -148,6 +160,10 @@ export default function CheckoutPage() {
 
     return (
         <div className="flex justify-center items-center">
+            <Script
+                src="https://www.payhere.lk/lib/payhere.js"
+                strategy="beforeInteractive"
+            />
             <Form
                 form={form}
                 onFinish={onFinish}

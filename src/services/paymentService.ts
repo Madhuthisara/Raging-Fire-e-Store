@@ -33,5 +33,49 @@ export const paymentService = {
         };
         const response = await axiosInstance.post(API_ENDPOINTS.PAYMENTS.INITIATE, payload);
         return response.data;
+    },
+
+    initiatePayHereSimple: async (orderId: string, amount: number) => {
+        // 1. Call our Laravel API to get all PayHere checkout parameters and sandbox flag
+        const response = await axiosInstance.post('/payment/initiate', {
+            order_id: orderId,
+            amount: amount
+        });
+
+        if (response.data.status === 'success') {
+            const { params, sandbox } = response.data;
+
+            // 2. Initialize the PayHere payment object for the SDK
+            const payment = {
+                sandbox: sandbox,
+                ...params
+            };
+
+            // 3. Define the PayHere event handlers
+            // @ts-ignore (PayHere is provided by a global script)
+            window.payhere.onCompleted = (payhereOrderId: string) => {
+                console.log("Payment completed. OrderID:" + payhereOrderId);
+                // Redirect to success page (database is updated via notify_url webhook)
+                window.location.href = params.return_url;
+            };
+
+            // @ts-ignore
+            window.payhere.onDismissed = () => {
+                console.log("Payment dismissed");
+                // Optionally show a message or redirect to cancel page
+            };
+
+            // @ts-ignore
+            window.payhere.onError = (error: string) => {
+                console.error("PayHere Error:", error);
+            };
+
+            // 4. Start the payment checkout popup
+            // @ts-ignore
+            window.payhere.startPayment(payment);
+
+        } else {
+            throw new Error(response.data.message || 'Failed to initiate payment');
+        }
     }
 };

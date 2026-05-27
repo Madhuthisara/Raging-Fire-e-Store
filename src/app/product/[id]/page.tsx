@@ -51,7 +51,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
     // Filter related products
     const allProducts = allProductsResponse?.output;
-    const productsArray = Array.isArray(allProducts) ? allProducts : allProducts?.data || [];
+    const productsArray = Array.isArray(allProducts) ? allProducts : allProducts?.values || [];
 
     const relatedProducts = productsArray
         ?.filter((p: Product) => p.id !== id)

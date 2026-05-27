@@ -14,7 +14,7 @@ const NewDrops = () => {
             try {
                 const response = await productService.getAllProducts();
                 if (response.success && response.output) {
-                    setProducts(Array.isArray(response.output) ? response.output : response.output.data);
+                    setProducts(Array.isArray(response.output) ? response.output : response.output.values);
                 }
             } catch (error) {
                 console.error('Failed to fetch products:', error);
