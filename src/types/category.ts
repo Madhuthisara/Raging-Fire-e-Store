@@ -8,8 +8,10 @@ export interface Category {
     updated_at: string;
 }
 
+import { PaginatedData } from './pagination';
+
 export interface CategoriesListResponse {
     success: boolean;
     message: string;
-    output: Category[];
+    output: PaginatedData<Category>;
 }

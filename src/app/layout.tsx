@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Bebas_Neue } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import QueryProvider from "@/providers/QueryProvider";
 import ThemeProvider from "@/providers/ThemeProvider";
@@ -31,6 +32,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <Script
+          src="https://www.payhere.lk/lib/payhere.js"
+          strategy="beforeInteractive"
+        />
+      </head>
       <body
         className={`${inter.variable} ${bebasNeue.variable} font-sans antialiased flex flex-col min-h-screen`}
       >
