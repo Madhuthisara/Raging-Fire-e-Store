@@ -26,7 +26,7 @@ export const heroService = {
             }
 
             const data = await response.json();
-            return data.data || [];
+            return data.output?.values || data.data || [];
         } catch (error) {
             console.error('Failed to fetch hero sections:', error);
             return [];

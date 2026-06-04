@@ -200,7 +200,7 @@ export default function RegisterPage() {
                     <div className="text-center mt-6">
                         <p className="text-[10px] text-text-muted uppercase tracking-widest">
                             Already have an account?{' '}
-                            <Link href="/login" className="font-bold text-primary hover:underline transition-all">
+                            <Link href="/login" prefetch={false} className="font-bold text-primary hover:underline transition-all">
                                 Log In
                             </Link>
                         </p>

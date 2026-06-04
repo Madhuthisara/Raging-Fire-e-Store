@@ -55,12 +55,14 @@ export default function OrderConfirmationPage() {
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
                     <Link
                         href="/shop"
+                        prefetch={false}
                         className="flex-1 bg-primary text-background py-4 text-[10px] font-black uppercase tracking-widest hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
                     >
                         Continue Shopping <ArrowRight size={14} />
                     </Link>
                     <Link
                         href="/profile"
+                        prefetch={false}
                         className="flex-1 border border-zinc-300 dark:border-zinc-700 text-primary py-4 text-[10px] font-black uppercase tracking-widest hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
                     >
                         View Order Status
