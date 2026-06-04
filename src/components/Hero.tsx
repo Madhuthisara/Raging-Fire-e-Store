@@ -71,7 +71,7 @@ const Hero = () => {
                         )}
 
                         {hero.button_text && hero.button_link && (
-                            <Link href={hero.button_link} className="inline-flex justify-center items-center px-8 py-3 bg-white text-black text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-gray-200 transition-colors duration-300">
+                            <Link href={hero.button_link} prefetch={false} className="inline-flex justify-center items-center px-8 py-3 bg-white text-black text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-gray-200 transition-colors duration-300">
                                 {hero.button_text}
                             </Link>
                         )}

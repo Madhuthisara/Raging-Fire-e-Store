@@ -11,7 +11,7 @@ const Footer = () => {
 
                     {/* Left Column - Newsletter */}
                     <div className="md:col-span-5">
-                        <Link href="/" className="text-3xl font-heading tracking-wider uppercase mb-6 block text-primary">
+                        <Link href="/" prefetch={false} className="text-3xl font-heading tracking-wider uppercase mb-6 block text-primary">
                             RAGING FIRE
                         </Link>
                         <p className="text-xs uppercase tracking-widest text-text-muted mb-6 leading-relaxed max-w-sm">
@@ -58,17 +58,17 @@ const Footer = () => {
                         <h4 className="text-xs font-bold uppercase tracking-widest mb-6 text-primary">SUPPORT</h4>
                         <ul className="space-y-4">
                             <li>
-                                <Link href="/returns" className="text-xs text-text-muted hover:text-primary uppercase tracking-widest transition-colors">
+                                <Link href="/returns" prefetch={false} className="text-xs text-text-muted hover:text-primary uppercase tracking-widest transition-colors">
                                     PAYMENT METHODS
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/terms" className="text-xs text-text-muted hover:text-primary uppercase tracking-widest transition-colors">
+                                <Link href="/terms" prefetch={false} className="text-xs text-text-muted hover:text-primary uppercase tracking-widest transition-colors">
                                     TERMS & CONDITIONS
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/privacy" className="text-xs text-text-muted hover:text-primary uppercase tracking-widest transition-colors">
+                                <Link href="/privacy" prefetch={false} className="text-xs text-text-muted hover:text-primary uppercase tracking-widest transition-colors">
                                     PRIVACY POLICY
                                 </Link>
                             </li>

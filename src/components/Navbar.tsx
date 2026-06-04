@@ -32,17 +32,17 @@ const Navbar = () => {
     const accountMenuItems: MenuProps['items'] = [
         {
             key: 'profile',
-            label: <Link href="/profile">My Profile</Link>,
+            label: <Link prefetch={false} href="/profile">My Profile</Link>,
             icon: <UserIcon size={14} />,
         },
         {
             key: 'orders',
-            label: <Link href="/profile/orders">My Orders</Link>,
+            label: <Link prefetch={false} href="/profile/orders">My Orders</Link>,
             icon: <Package size={14} />,
         },
         {
             key: 'wishlist',
-            label: <Link href="/wishlist">Wishlist</Link>,
+            label: <Link prefetch={false} href="/wishlist">Wishlist</Link>,
             icon: <Heart size={14} />,
         },
         {
@@ -102,7 +102,7 @@ const Navbar = () => {
 
                     {/* Center: Logo Section */}
                     <div className="flex-shrink-0 flex items-center absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
-                        <Link href="/" className="flex items-center group">
+                        <Link href="/" prefetch={false} className="flex items-center group">
                             {resolvedTheme === 'dark' ? (
                                 <img src="/Logo_White.png" alt="Raging Fire Logo" className="h-[18px]  md:h-[20px] lg:h-[22px] w-auto transition-transform group-hover:scale-105" />
                             ) : (
@@ -116,6 +116,7 @@ const Navbar = () => {
                         {navLinks.map((link) => (
                             <Link
                                 key={link.href}
+                                prefetch={false}
                                 href={link.href}
                                 className="text-xs font-black uppercase tracking-[0.2em] text-foreground opacity-60 hover:opacity-100 transition-all hover:translate-y-[-1px] active:translate-y-0"
                             >
@@ -158,6 +159,7 @@ const Navbar = () => {
                         ) : (
                             <Link
                                 href="/login"
+                                prefetch={false}
                                 className="opacity-60 hover:opacity-100 transition-opacity p-2 flex items-center gap-2 group"
                             >
                                 <UserIcon size={18} strokeWidth={2.5} />
@@ -215,6 +217,7 @@ const Navbar = () => {
                             <Link
                                 key={link.href}
                                 href={link.href}
+                                prefetch={false}
                                 onClick={() => setMobileMenuOpen(false)}
                                 className="text-sm font-black uppercase tracking-[0.25em] text-primary hover:pl-2 transition-all border-l-2 border-transparent hover:border-primary pl-0"
                             >
@@ -239,6 +242,7 @@ const Navbar = () => {
 
                         <Link
                             href="/search"
+                            prefetch={false}
                             onClick={() => setMobileMenuOpen(false)}
                             className="flex items-center gap-3 w-full p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900/50 text-xs font-bold uppercase tracking-widest"
                         >

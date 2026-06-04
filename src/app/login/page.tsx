@@ -115,6 +115,7 @@ export default function LoginPage() {
                         </p>
                         <Link
                             href="/register"
+                            prefetch={false}
                             className="mt-4 group relative w-full flex justify-center py-3 px-4 border border-black dark:border-white text-xs font-black uppercase tracking-[0.2em] text-primary bg-transparent hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
                         >
                             <span className="absolute left-0 inset-y-0 flex items-center pl-3">

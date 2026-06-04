@@ -36,7 +36,7 @@ const ProductCard = ({ id, businessId, name, price, image, category, isNew }: Pr
     };
 
     return (
-        <Link href={`/product/${id}`} className="group cursor-pointer block">
+        <Link href={`/product/${id}`} prefetch={false} className="group cursor-pointer block">
             <div className="relative aspect-[3/4] overflow-hidden bg-zinc-100 dark:bg-zinc-900 rounded-sm group/image shadow-sm border border-zinc-200/50 dark:border-zinc-800/50">
                 {isNew && (
                     <span className="absolute top-2 left-2 md:top-3 md:left-3 z-10 bg-primary text-background text-[8px] md:text-[10px] font-black px-1.5 py-0.5 md:px-2 md:py-1 uppercase tracking-[0.2em]">

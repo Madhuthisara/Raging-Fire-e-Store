@@ -32,14 +32,15 @@ export default function CheckoutPage() {
         // Fetch active payment gateways
         const fetchMethods = async () => {
             try {
-                // Hardcoded business ID fallback to match previous patterns in the store
-                const businessId = '01kkazv3v65cz550skrzvfsge9';
+                // Fetch dynamic config from environment or use fallback
+                const businessId = process.env.NEXT_PUBLIC_BUSINESS_ID || '01kkazv3v65cz550skrzvfsge9';
                 const res = await paymentService.getActiveMethods(businessId);
                 if (res.output) {
                     setMethods(res.output);
                 }
             } catch (err) {
-                console.error('Failed to parse payment methods', err);
+                // Silent failure is better for UX here, as COD is always available
+                setMethods([]);
             }
         };
         fetchMethods();
@@ -70,8 +71,8 @@ export default function CheckoutPage() {
 
         setLoading(true);
         try {
-            // Grab business_id from the first item (all items belong to one business in this e-store)
-            const businessId = (items[0] as any).businessId || '01kkazv3v65cz550skrzvfsge9';
+            // Grab business_id from cart items, or fallback to the global environment configuration
+            const businessId = (items[0] as any).businessId || process.env.NEXT_PUBLIC_BUSINESS_ID || '01kkazv3v65cz550skrzvfsge9';
 
             const orderPayload = {
                 business_id: businessId,
@@ -106,16 +107,6 @@ export default function CheckoutPage() {
                     // Gateway online payment flow
                     setIsRedirecting(true);
                     try {
-                        if (paymentMethod === 'payhere') {
-                            // Use our new Simple/Public initiation flow for PayHere
-                            await paymentService.initiatePayHereSimple(createdOrderId, finalTotal);
-                            // Clear cart right before moving to gateway
-                            clearCart();
-                            // The above method handles redirection, so we stop here
-                            return;
-                        }
-
-                        // Fallback/Existing flow for other gateways
                         const initResponse = await paymentService.initiatePayment({
                             business_id: businessId,
                             gateway_name: paymentMethod,
@@ -137,8 +128,14 @@ export default function CheckoutPage() {
                         // Clear cart right before moving to gateway
                         clearCart();
 
-                        // Standard redirect for other gateways (Stripe, PayPal)
-                        window.location.href = initResponse.output.payment_url;
+                        // Standard redirect for online gateways (Stripe, PayPal)
+                        if (initResponse.action) {
+                            window.location.href = initResponse.action;
+                        } else if (initResponse.output?.payment_url) {
+                            window.location.href = initResponse.output.payment_url;
+                        } else {
+                            throw new Error('Payment URL not provided by gateway');
+                        }
 
                     } catch (paymentErr: any) {
                         console.error('Payment initiation failed:', paymentErr);
@@ -160,10 +157,7 @@ export default function CheckoutPage() {
 
     return (
         <div className="flex justify-center items-center">
-            <Script
-                src="https://www.payhere.lk/lib/payhere.js"
-                strategy="beforeInteractive"
-            />
+
             <Form
                 form={form}
                 onFinish={onFinish}
