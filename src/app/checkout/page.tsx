@@ -32,14 +32,24 @@ export default function CheckoutPage() {
         // Fetch active payment gateways
         const fetchMethods = async () => {
             try {
-                // Fetch dynamic config from environment or use fallback
-                const businessId = process.env.NEXT_PUBLIC_BUSINESS_ID || '01kkazv3v65cz550skrzvfsge9';
+                // Fetch dynamic config from environment
+                const businessId = process.env.NEXT_PUBLIC_BUSINESS_ID;
+                if (!businessId) {
+                    console.error('NEXT_PUBLIC_BUSINESS_ID is not defined in .env');
+                }
+
+                console.log('Fetching payment methods for businessId:', businessId);
                 const res = await paymentService.getActiveMethods(businessId);
-                if (res.output) {
+                console.log('Payment methods response:', res);
+
+                if (res.output && Array.isArray(res.output)) {
                     setMethods(res.output);
+                } else {
+                    console.warn('Payment methods response output is missing or not an array:', res.output);
+                    setMethods([]);
                 }
             } catch (err) {
-                // Silent failure is better for UX here, as COD is always available
+                console.error('Payment Service Error:', err);
                 setMethods([]);
             }
         };
@@ -72,7 +82,8 @@ export default function CheckoutPage() {
         setLoading(true);
         try {
             // Grab business_id from cart items, or fallback to the global environment configuration
-            const businessId = (items[0] as any).businessId || process.env.NEXT_PUBLIC_BUSINESS_ID || '01kkazv3v65cz550skrzvfsge9';
+            // Grab business_id from cart items, or fallback to the global environment configuration
+            const businessId = (items[0] as any).businessId || process.env.NEXT_PUBLIC_BUSINESS_ID;
 
             const orderPayload = {
                 business_id: businessId,
